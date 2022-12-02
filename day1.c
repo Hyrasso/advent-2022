@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "utils/vector.h"
+
 #define N 32
 
 int main(int argc, char* argv[]) {
@@ -10,9 +12,12 @@ int main(int argc, char* argv[]) {
     int cal;
     int acc = 0;
     int lc = 0;
-    int max_cal1 = 0;
-    int max_cal2 = 0;
-    int max_cal3 = 0;
+
+    vector *vec = vec_create(8);
+    if (vec == NULL)
+        return -1;
+
+    vec_debug(vec);
 
     while(1) {
         lc++;
@@ -21,18 +26,8 @@ int main(int argc, char* argv[]) {
         }
         // printf("%s", line);
         if (line[0] == '\n') {
-            // if (acc > max_cal)
-            //     printf("%d - current, max: %d, %d\n", lc, acc, max_cal);
-            if (acc > max_cal1) {
-                max_cal3 = max_cal2;
-                max_cal2 = max_cal1;
-                max_cal1 = acc;
-            } else if (acc > max_cal2) {
-                max_cal3 = max_cal2;
-                max_cal2 = acc;
-            } else if (acc > max_cal3) {
-                max_cal3 = acc;
-            }
+            vec_append(vec, acc);
+            // vec_debug(vec);
             acc = 0;
         } else {
             cal = strtol(line, NULL, 10);
@@ -40,7 +35,10 @@ int main(int argc, char* argv[]) {
             acc += cal;
         }
     };
-    printf("Max cal: %d %d %d = %d\n", max_cal1, max_cal2, max_cal3, max_cal1 + max_cal2 + max_cal3);
+    vec_bubble_sort(vec);
+    vec_debug(vec);
+
+    printf("Max cal: %d, sum top 3 %d\n", vec->array[vec->size-1], vec->array[vec->size-1] + vec->array[vec->size-2] + vec->array[vec->size-3]);
 
     // 32766 too low
     // 92764, 1445292102 too high
