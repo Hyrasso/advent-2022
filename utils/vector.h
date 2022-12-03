@@ -1,3 +1,6 @@
+#ifndef VECTOR_H
+#define VECTOR_H
+
 #include <stdlib.h>
 
 typedef struct 
@@ -34,3 +37,5 @@ void vec_debug(vector* vec);
 /// @brief Sort the array inplace, in ascending order
 /// @param vec 
 void vec_bubble_sort(vector* vec);
+
+#endif
