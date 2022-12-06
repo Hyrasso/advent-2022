@@ -4,9 +4,9 @@
 #define NSTACK 9
 #define N 128
 
-#define PART 2
+#define PART 1
 
-void parse(FILE* file, char* stacks) {
+void parse(FILE* file, char stacks[][N]) {
     int col = 0;
     size_t row = 0;
     while(1) {
@@ -20,8 +20,8 @@ void parse(FILE* file, char* stacks) {
             int stack_idx = (col - 1) / 4;
             // printf("Found %c, putting it in stack %d\n", c, stack_idx);
             for (size_t j=1;j <= N;j++) {
-                if (stacks[stack_idx * N + N - j] == 0) {
-                    stacks[stack_idx * N + N - j] = c;
+                if (stacks[stack_idx][N - j] == 0) {
+                    stacks[stack_idx][N - j] = c;
                     break;
                 }
             }
@@ -43,10 +43,10 @@ void parse(FILE* file, char* stacks) {
     for (size_t stack_idx=0; stack_idx < NSTACK;stack_idx++) {
         size_t stack_top = 0;
         for (size_t i=0; i < N;i++) {
-            if (stacks[stack_idx * N + i] != 0) {
+            if (stacks[stack_idx][i] != 0) {
                 // printf("Reversing %c at %zu to %zu\n", stacks[stack_idx * N + i], i, stack_top);
-                stacks[stack_idx * N + stack_top] = stacks[stack_idx * N + i];
-                stacks[stack_idx * N + i] = 0;
+                stacks[stack_idx][stack_top] = stacks[stack_idx][i];
+                stacks[stack_idx][i] = 0;
                 stack_top++;
             }
 
@@ -54,14 +54,14 @@ void parse(FILE* file, char* stacks) {
     }
 }
 
-void print_stacks(char* stacks) {
+void print_stacks(char stacks[][N]) {
     for (size_t i=0;i<NSTACK;i++) {
         printf("%zu ", i + 1);
         for (size_t j=0;j<N;j++) {
-            if (stacks[i * N + j] == 0) {
+            if (stacks[i][j] == 0) {
                 // printf("_ ");
             } else {
-                printf("%c ", stacks[i * N + j]);
+                printf("%c ", stacks[i][j]);
             }
         }
         printf("\n");
@@ -73,9 +73,7 @@ int main(int argc, char* argv[]) {
     if (file == NULL)
         perror("Error opening file");
 
-    char* stacks = calloc(N * NSTACK, sizeof(char));
-    if (stacks == NULL)
-        return 1;
+    char stacks[NSTACK][N] = {0};
 
     printf("Parsing\n");
     parse(file, stacks);
@@ -90,20 +88,20 @@ int main(int argc, char* argv[]) {
         from--;
         to--;
         size_t from_stack_top = 0;
-        for (;stacks[from * N + from_stack_top] != 0;from_stack_top++);
+        for (;stacks[from][from_stack_top] != 0;from_stack_top++);
         size_t to_stack_top = 0;
-        for (;stacks[to * N + to_stack_top] != 0;to_stack_top++);
+        for (;stacks[to][to_stack_top] != 0;to_stack_top++);
         // printf("ST %zu %zu\n", from_stack_top, to_stack_top);
         // switch for part 2
         #if PART == 1
         for (int i = 0;i<count;i++) {
-            stacks[to * N + to_stack_top + i] = stacks[from * N + from_stack_top - i - 1];
-            stacks[from * N + from_stack_top - i - 1] = 0;
+            stacks[to][to_stack_top + i] = stacks[from][from_stack_top - i - 1];
+            stacks[from][from_stack_top - i - 1] = 0;
         }
         #else
         for (int i = 0;i<count;i++) {
-            stacks[to * N + to_stack_top + i] = stacks[from * N + from_stack_top + i - count];
-            stacks[from * N + from_stack_top + i - count] = 0;
+            stacks[to][to_stack_top + i] = stacks[from][from_stack_top + i - count];
+            stacks[from][from_stack_top + i - count] = 0;
         }
         #endif
 
@@ -114,8 +112,8 @@ int main(int argc, char* argv[]) {
     // read top of the stacks
     for (size_t stack_idx=0;stack_idx < NSTACK;stack_idx++) {
         size_t stack_top = 0;
-        for (;stacks[stack_idx * N + stack_top] != 0;stack_top++);
-        printf("%c", stacks[stack_idx * N + stack_top - 1]);
+        for (;stacks[stack_idx][stack_top] != 0;stack_top++);
+        printf("%c", stacks[stack_idx][stack_top - 1]);
     }
     printf("\n");
 
