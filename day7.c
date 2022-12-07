@@ -169,9 +169,12 @@ int main(int argc, char* argv[]) {
 
     printf("Sum: %d\n", total_sum);
 
-    int size = current->total_file_size;
-    int target = size - 30000000;
+    int total = 70000000;
+    int needed = 30000000;
+    int free = total - current->total_file_size;
+    int target = needed - free;
     fprintf(stderr, "Target %d\n", target);
+    int size = current->total_file_size;
     size_to_del(current, &size, target);
 
     printf("To del: %d\n", size);
