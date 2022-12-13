@@ -142,4 +142,5 @@ int main(int argc, char* argv[]) {
     printf("Head pos %d %d\n", rope[0].x, rope[0].y);
     printf("Visited points %zu\n", pos->len + 1);
     
+    return 0;
 }
