@@ -23,7 +23,7 @@ vector* vec_init(vector* vec, size_t initial_capacity) {
 
 int vec_resize(vector* vec, size_t new_capacity) {
     fprintf(stderr, "Resising from %zu to %zu\n", vec->capacity, new_capacity);
-    int* res = realloc(vec->array, sizeof(int) * new_capacity);
+    int* res = realloc(vec->array, sizeof(*(vec->array)) * new_capacity);
     if (res == NULL)
         return -1;
     vec->array = res;
