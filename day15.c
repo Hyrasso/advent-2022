@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
     // can look for x and y independtly?
     // for each i:
     // abs(tx - six) + abs(ty - siy) > abs(bix - six) + abs(biy - siy)
-    // can be solved by checking each
+    // can be solved by checking each x,y
 
     sensor* sensors = calloc(32, sizeof(sensor));
     int n_sensor = 0;
@@ -101,6 +101,6 @@ int main(int argc, char* argv[]) {
     }
     
     // 796961409 too low (because of overflow when multiplying int by 4000000)
-    printf("Spot %d:%d %d\n", tx, ty);
+    printf("Spot %d:%d\n", tx, ty);
     return 1;
 }
