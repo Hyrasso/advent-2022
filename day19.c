@@ -59,7 +59,7 @@ int max_bt(blueprint b, state s, int m) {
     new_s.geode += s.geode_bot;
     // fprintf(stderr, "%d: state %d (+%d) ore, %d (+%d) clay, %d (+%d) obs, %d (+%d) geode\n", m, new_s.ore, new_s.ore_bot, new_s.clay, new_s.clay_bot, new_s.obsidian, new_s.obsidian_bot, new_s.geode, new_s.geode_bot);
 
-    // if possible to build a geode bot, just do that
+    // if possible to build a geode bot, try that first
     if ((s.ore >= b.geode_ore) && (s.obsidian >= b.geode_obsidian)) {
         new_s.ore -= b.geode_ore;
         new_s.obsidian -= b.geode_obsidian;
@@ -70,12 +70,10 @@ int max_bt(blueprint b, state s, int m) {
         int ngeode = max_bt(b, new_s, m - 1);
         best_geode_score = (ngeode > best_geode_score) ? ngeode : best_geode_score;
 
-        return best_geode_score;
-
-        // // revert bot construction state
-        // new_s.ore += b.geode_ore;
-        // new_s.obsidian += b.geode_obsidian;
-        // new_s.geode_bot -= 1;
+        // revert bot construction state
+        new_s.ore += b.geode_ore;
+        new_s.obsidian += b.geode_obsidian;
+        new_s.geode_bot -= 1;
     }
 
     // build ore bot, unless we are are producing more ore than we can spend per minute
