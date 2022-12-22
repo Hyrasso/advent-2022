@@ -31,6 +31,10 @@ int key_cmp(const void* a, const void* b) {
     return strcmp(ea.key, eb.key);
 }
 
+void print_elem(void* dkv) {
+    dkv_t* elem = dkv;
+    fprintf(stderr, "%s: %zu", elem->key, elem->value);
+}
 
 int main(int argc, char* argv[]) {
     dict* d = dict_create(&hash_key, &key_cmp);
@@ -45,7 +49,7 @@ int main(int argc, char* argv[]) {
     // reinsert first entry
     dkv_t *res = dict_insert(d, &entry);
     assert(res->key == entry.key);
-    dict_print(d);
+    dict_print(d, print_elem);
 
     dkv_t** new_entries = calloc(16, sizeof(dkv_t*));
     for (int i = 0;i < 16;i++) {
@@ -69,7 +73,7 @@ int main(int argc, char* argv[]) {
     query.key = "Oo";
     assert(((dkv_t*)dict_get(d, &query)) == NULL);
 
-    dict_print(d);
+    dict_print(d, print_elem);
     
     printf("All check passed\n");
     return 0;
