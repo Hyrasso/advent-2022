@@ -166,9 +166,9 @@ int main(int argc, char* argv[]) {
     long lower = x - dir * coef;
     long higher = x + dir * coef + 1;
     humn->val = lower;
-    double higher_val = compute_val(nodes, root1);
+    // double higher_val = compute_val(nodes, root1);
     humn->val = higher;
-    double lower_val = compute_val(nodes, root1);
+    // double lower_val = compute_val(nodes, root1);
     while (higher - lower > 1)
     {
         humn->val = (lower + higher) / 2; // can overflow
@@ -176,13 +176,13 @@ int main(int argc, char* argv[]) {
         double val = compute_val(nodes, root1);
         fprintf(stderr, "Res %lf\n", val);
         if (dir * (val - target_val) < 0) {
-            lower_val = val;
+            // lower_val = val;
             lower = humn->val;
         } else if (dir * (val - target_val) > 0) {
-            higher_val = val;
+            // higher_val = val;
             higher = humn->val;
         } else if (abs(val - target_val) < .1) {
-            printf("Hit %lf\n", humn->val);
+            printf("Hit %ld\n", humn->val);
             break;
         }
     }
